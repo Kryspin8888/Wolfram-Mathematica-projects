@@ -1,0 +1,62 @@
+//EULER
+T = 8
+L = 10
+tau = 0.01
+h = 0.1
+
+u = Table[0, {i, 0, 101}];
+up = Table[0, {i, 0, 101}];
+tab = {};
+AppendTo[tab, u];
+
+For[j = 1, j < T/tau, j++,
+ up[[1]] = Sin[tau*j];
+ For[i = 2, i < L/h, i++,
+  up[[i]] = u[[i]] - tau/(2 h) (u[[i + 1]] - u[[i - 1]]);
+  ];
+ up[[((L/h) + 1)]] = 0;
+ For[i = 1, i <= ((L/h) + 1), i++,
+  u[[i]] = up[[i]];
+  ];
+ AppendTo[tab, u];
+ ]
+
+ListPlot[{tab[[100]], tab[[200]], tab[[300]], tab[[400]]},
+ PlotRange -> All]
+ListAnimate[
+ Table[ListPlot[tab[[n]], PlotRange -> {-1.5, 1.5}], {n, 1, 400}]]
+
+
+//Runge-Kutta
+T = 8
+L = 10
+tau = 0.01
+h = 0.1
+
+u = Table[0, {i, 0, 101}];
+d = Table[0, {i, 0, 101}];
+up = Table[0, {i, 0, 101}];
+dn = Table[0, {i, 0, 101}];
+tab = {};
+AppendTo[tab, u];
+
+For[j = 1, j < T/tau, j++,
+ up[[1]] = Sin[tau*j];
+ dn[[1]] = Sin[tau*(j + (1/2))];
+ For[i = 2, i < L/h, i++,
+  dn[[i]] = u[[i]] - tau/(4 h) (u[[i + 1]] - u[[i - 1]]);
+  ];
+ For[i = 2, i < L/h, i++,
+  up[[i]] = u[[i]] - tau/(2 h) (dn[[i + 1]] - dn[[i - 1]]);
+  ];
+ up[[((L/h) + 1)]] = 0;
+ For[i = 1, i <= ((L/h) + 1), i++,
+  u[[i]] = up[[i]];
+  ];
+ AppendTo[tab, u];
+ ]
+
+ListPlot[{tab[[100]], tab[[200]], tab[[300]], tab[[400]], tab[[600]],
+  tab[[800]]}, PlotRange -> All]
+ListAnimate[
+ Table[ListPlot[tab[[n]], PlotRange -> {-1.5, 1.5}], {n, 1, 800}]]

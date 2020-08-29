@@ -1,0 +1,53 @@
+a = 35
+b = 28
+Print["Liczba a"]
+c = a
+Print["Liczba b"]
+d = b
+
+While[b != 0, pom = b; b = Mod[a, b]; a = pom]
+Print["NWD dla tych liczb "]
+Print[a]
+Print["NWW dla tych liczb "]
+Print[(c*d)/a]
+
+Print["\n"];
+Print["Twoj pierwszy wielomian"]
+e = x^3 - 6 x^2 + 11 x - 6
+
+Print["Twoj drugi wielomian"]
+f = x^3 - 9 x^2 + 26 x - 24
+
+k = x /. Solve[e == 0, x]
+l = x /. Solve[f == 0, x]
+
+Print["Pierwszy wielomian rozlozony na czynniki"]
+g = x - k
+
+Print["Drugi wielomian rozlozony na czynniki"]
+h = x - l
+
+dlg = Length[k]
+dlh = Length[l]
+
+nwd = 1
+nww = 1
+
+For[i = 1, i <= dlg, i = i + 1, nww = nww*g[[i]]]
+
+For[i = 1, i <= dlg, i = i + 1, 
+ For[j = 1, j <= dlh, j = j + 1, 
+  If[g[[i]] == h[[j]], nwd = nwd*g[[i]]]]]
+
+nwwpom = Table[0, {i, dlh}]
+
+For[j = 1, j <= dlh, j = j + 1, 
+ For[i = 1, i <= dlg, i = i + 1, If[h[[j]] == g[[i]], nwwpom[[j]]++]]]
+nwwpom
+
+For[j = 1, j <= dlh, j = j + 1, If[nwwpom[[j]] == 0, nww = nww*h[[j]]]]
+
+Print["NWD wielomianów to"]
+Print[nwd]
+Print["NWW wielomianów to"]
+Print[nww]
